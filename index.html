@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Santa Hat - 3D Terminal Magic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(ellipse at top, #1a0000 0%, #0a0a0a 40%, #000000 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 2px, rgba(255,255,255,0.03) 3px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 2px, rgba(255,255,255,0.03) 3px);
+            animation: scan 8s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(20px); }
+        }
+
+        .hero-content {
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 300;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ff0000, #ffffff, #ff0000);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+            letter-spacing: 0.1em;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: rgba(255, 68, 68, 0.8);
+            margin-bottom: 2rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .ascii-preview {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem auto;
+            max-width: 90%;
+            box-shadow: 0 20px 60px rgba(255, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            font-size: clamp(0.4rem, 1.5vw, 0.7rem);
+            line-height: 1.2;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .ascii-preview::before {
+            content: '> RENDERING...';
+            position: absolute;
+            top: 0.5rem;
+            left: 1rem;
+            color: #00ff00;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: rgba(255, 0, 0, 0.1);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 0, 0, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 0, 0, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.4);
+            border-color: rgba(255, 0, 0, 0.8);
+        }
+
+        .cta-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: #ff0000;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: rgba(255, 0, 0, 0.5);
+            margin: 1.5rem auto;
+            border-radius: 2px;
+        }
+
+        .math-section {
+            background: rgba(13, 13, 13, 0.4);
+            padding: 2.5rem;
+            border-left: 3px solid rgba(255, 0, 0, 0.3);
+            margin: 2rem 0;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .math-formula {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+            border: 1px solid rgba(51, 51, 51, 0.3);
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            margin: 2rem 0;
+            overflow-x: auto;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .code-block::before {
+            content: 'python';
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+        }
+
+        .code-block code {
+            color: #fff;
+            font-family: 'Courier New', monospace;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-card {
+            background: rgba(26, 0, 0, 0.3);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 0, 0, 0.15);
+            border-color: rgba(255, 0, 0, 0.4);
+            background: rgba(26, 0, 0, 0.5);
+        }
+
+        .feature-card h3 {
+            color: #ff4444;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-weight: 400;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: #ff0000;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .glow-text {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { 
+                text-shadow: 0 0 10px rgba(255, 0, 0, 0.5), 
+                             0 0 20px rgba(255, 0, 0, 0.3); 
+            }
+            to { 
+                text-shadow: 0 0 20px rgba(255, 0, 0, 0.8), 
+                             0 0 40px rgba(255, 0, 0, 0.4),
+                             0 0 60px rgba(255, 0, 0, 0.2); 
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ff0000;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        @media (max-width: 768px) {
+            .ascii-preview {
+                font-size: 0.3rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-content">
+            <h1 class="glow-text">ASCII SANTA HAT</h1>
+            <p class="subtitle">3D Terminal Rendering Magic</p>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Donut.c on steroids — A full 3D engine in your terminal</p>
+            
+            <div class="ascii-preview">
+<pre>                  @@@@@
+                @@@@@@@@
+              @@@@@@@@@@
+            @@@@@@@@@@@@@
+          @@@@@@@@@@@@@@@@
+        @@@@@@@@@@@@@@@@@@@
+      @@@@@@@@@@@@@@@@@@@@@@
+    @@@@@@@@@@@@@@@@@@@@@@@@@
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+=============================================
+*** MERRY CHRISTMAS *** HO HO HO ***
+=============================================</pre>
+            </div>
+
+            <div>
+                <a href="#how-it-works" class="cta-button"><span>Explore the Math</span></a>
+                <a href="https://github.com" class="cta-button" style="background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.3);"><span>View on GitHub</span></a>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div style="font-size: 2rem;">↓</div>
+            <div>Scroll to learn more</div>
+        </div>
+    </div>
+
+    <section id="how-it-works">
+        <h2 class="section-title">How It Works</h2>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🎨 Parametric Geometry</h3>
+                <p>Three distinct 3D surfaces: a curved cone (hat body), torus (fluffy rim), and sphere (pom-pom), all mathematically defined.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>🔄 Rotation Matrices</h3>
+                <p>Two-axis rotation using X and Y rotation matrices for smooth 3D spinning animation.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>📐 1/z Projection</h3>
+                <p>Perspective projection using inverse depth—the same trick from the classic donut.c renderer.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>🎯 Z-Buffer</h3>
+                <p>Depth buffer ensures closer points override farther ones for proper 3D occlusion.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>💡 Dot Product Lighting</h3>
+                <p>Normal vectors dotted with light direction determine ASCII character brightness.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>🌈 ANSI Colors</h3>
+                <p>Red hat body, white pom-pom and rim, yellow scrolling text—all in glorious terminal colors.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">The Mathematics</h2>
+        
+        <div class="math-section">
+            <h3 style="color: #ff0000; margin-bottom: 1rem;">1. Rotation Around X-Axis (Tilt)</h3>
+            <div class="math-formula">
+y₂ = y·cos(A) - z·sin(A)
+z₂ = y·sin(A) + z·cos(A)
+            </div>
+            
+            <h3 style="color: #ff0000; margin-bottom: 1rem; margin-top: 2rem;">2. Rotation Around Y-Axis (Spin)</h3>
+            <div class="math-formula">
+x₃ = x·cos(B) - z₂·sin(B)
+y₃ = y₂
+z₃ = x·sin(B) + z₂·cos(B)
+            </div>
+            
+            <h3 style="color: #ff0000; margin-bottom: 1rem; margin-top: 2rem;">3. Perspective Projection</h3>
+            <div class="math-formula">
+ooz = 1 / z₃
+
+xₛcᵣₑₑₙ = W/2 + Sₓ·(ooz·x₃)
+yₛcᵣₑₑₙ = H/2 + 2 - Sᵧ·(ooz·y₃)
+            </div>
+            <p style="margin-top: 1rem; color: #aaa;">Where Sₓ = 55 and Sᵧ = 30 control the scale</p>
+        </div>
+
+        <div class="math-section">
+            <h3 style="color: #ff0000; margin-bottom: 1rem;">Hat Body Geometry (Curved Cone)</h3>
+            <div class="math-formula">
+rad(t) = 1.8·(1 - t)
+spineₓ(t) = 1.8·t²
+spineᵧ(t) = -1.5 + 3.5·t - t³
+
+x = spineₓ(t) + rad(t)·cos(θ)
+y = spineᵧ(t)
+z = rad(t)·sin(θ)
+            </div>
+        </div>
+
+        <div class="math-section">
+            <h3 style="color: #ff0000; margin-bottom: 1rem;">Rim (Torus)</h3>
+            <div class="math-formula">
+x = (R + r·cos(φ))·cos(θ)
+y = h + r·sin(φ)
+z = (R + r·cos(φ))·sin(θ)
+
+R = 1.7, r = 0.4, h = -1.5
+            </div>
+        </div>
+
+        <div class="math-section">
+            <h3 style="color: #ff0000; margin-bottom: 1rem;">Lighting (Dot Product)</h3>
+            <div class="math-formula">
+L = N · Light_direction
+L = nₓ·0.5 + nᵧ·0.5 - nᵤ·0.5
+
+ASCII_chars = ".,-~:;=!*#$@"
+char_index = clamp(int(L * 8), 0, 11)
+            </div>
+            <p style="margin-top: 1rem; color: #aaa;">Higher luminance values map to brighter characters</p>
+        </div>
+    </section>
+
+    <section style="background: #0d0d0d;">
+        <h2 class="section-title">Implementation</h2>
+        
+        <div class="code-block">
+<code><span style="color: #ff79c6;">def</span> <span style="color: #50fa7b;">plot_pixel</span>(x, y, z, color, luminance):
+    <span style="color: #6272a4;"># Rotate around X-axis</span>
+    y2 = y * cosA - z * sinA
+    z2 = y * sinA + z * cosA
+    
+    <span style="color: #6272a4;"># Rotate around Y-axis</span>
+    x3 = x * cosB - z2 * sinB
+    y3 = y2
+    z3 = x * sinB + z2 * cosB
+    z3 += <span style="color: #bd93f9;">6.0</span>  <span style="color: #6272a4;"># Move in front of camera</span>
+    
+    <span style="color: #6272a4;"># Perspective projection</span>
+    ooz = <span style="color: #bd93f9;">1</span> / z3
+    xp = <span style="color: #50fa7b;">int</span>(WIDTH / <span style="color: #bd93f9;">2</span> + <span style="color: #bd93f9;">55</span> * ooz * x3)
+    yp = <span style="color: #50fa7b;">int</span>((HEIGHT / <span style="color: #bd93f9;">2</span> + <span style="color: #bd93f9;">2</span>) - <span style="color: #bd93f9;">30</span> * ooz * y3)
+    
+    <span style="color: #6272a4;"># Z-buffer test</span>
+    idx = xp + yp * WIDTH
+    <span style="color: #ff79c6;">if</span> ooz > zbuffer[idx]:
+        zbuffer[idx] = ooz
+        <span style="color: #6272a4;"># Map luminance to ASCII</span>
+        char = chars[<span style="color: #50fa7b;">int</span>(luminance * <span style="color: #bd93f9;">8</span>)]
+        output[idx] = color + char + RESET</code>
+        </div>
+        
+        <p style="text-align: center; margin-top: 2rem; font-size: 1.2rem;">
+            <span style="color: #ff0000;">80×30</span> characters × 
+            <span style="color: #ff0000;">~100 points</span> per shape × 
+            <span style="color: #ff0000;">3 shapes</span> = 
+            <span style="color: #ff0000;">Beautiful 3D ASCII art</span>
+        </p>
+    </section>
+
+    <section>
+        <h2 class="section-title">Inspired By</h2>
+        <div style="text-align: center; font-size: 1.2rem; line-height: 2;">
+            <p>This project is a love letter to <span style="color: #ff0000;">a1k0n's donut.c</span></p>
+            <p>Taking the same mathematical principles and pushing them further:</p>
+            <p style="margin-top: 1rem;">
+                ✓ Multiple complex geometries<br>
+                ✓ ANSI color support<br>
+                ✓ Scrolling text billboard<br>
+                ✓ More sophisticated shading<br>
+            </p>
+            <p style="margin-top: 2rem; color: #666;">
+                "Sometimes the best way to understand something<br>
+                is to rebuild it from scratch and make it your own."
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <h3 style="color: #ff0000; margin-bottom: 1rem;">ASCII Santa Hat Renderer</h3>
+        <p>A 3D Terminal Christmas Experience</p>
+        <div class="footer-links">
+            <a href="https://github.com">GitHub</a>
+            <a href="santahatdocs.html">Documentation</a>
+            <a href="https://www.a1k0n.net/2011/07/20/donut-math.html">Original Donut Math</a>
+        </div>
+        <p style="margin-top: 2rem; color: #666;">
+            Made with ❤️ and mathematics | 2024
+        </p>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Animate feature cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '0';
+                    entry.target.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .math-section').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

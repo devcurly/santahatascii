@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santa Hat Docs - Complete Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: rgba(13, 13, 13, 0.6);
+            --bg-tertiary: rgba(26, 0, 0, 0.3);
+            --accent-red: #ff0000;
+            --accent-red-dim: rgba(255, 0, 0, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: #aaaaaa;
+            --border-color: rgba(255, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Courier New', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--accent-red);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .sidebar-header p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .nav-section {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.6rem 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 0.3rem;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--accent-red);
+            border-radius: 3px;
+            transition: height 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-tertiary);
+            color: var(--accent-red);
+            padding-left: 1.5rem;
+        }
+
+        .nav-link:hover::before {
+            height: 60%;
+        }
+
+        .nav-link.active {
+            background: var(--bg-tertiary);
+            color: var(--accent-red);
+            padding-left: 1.5rem;
+        }
+
+        .nav-link.active::before {
+            height: 60%;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 3rem;
+            max-width: 900px;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--accent-red), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            color: var(--accent-red);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--accent-red-dim);
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin: 2rem 0 1rem;
+            color: #ff4444;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin: 1.5rem 0 1rem;
+            color: var(--text-primary);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .code-inline {
+            background: var(--bg-tertiary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 0.75rem;
+            right: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .code-block code {
+            display: block;
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: var(--bg-tertiary);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 3px solid var(--accent-red-dim);
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-box-title {
+            font-weight: 500;
+            color: var(--accent-red);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-box p {
+            margin-bottom: 0;
+        }
+
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .param-table th {
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 500;
+            color: var(--accent-red);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .param-table td {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .param-table td:first-child {
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .math-formula {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            backdrop-filter: blur(10px);
+        }
+
+        .ascii-demo {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            line-height: 1.2;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 200;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.75rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: var(--accent-red);
+            margin: 4px 0;
+            transition: 0.3s;
+        }
+
+        @media (max-width: 968px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 2rem 1.5rem;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+                margin-top: 3rem;
+            }
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--accent-red);
+            background: var(--bg-tertiary);
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-toggle" onclick="toggleSidebar()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1>Santa Hat Docs</h1>
+            <p>Complete Documentation</p>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Getting Started</div>
+            <a href="#introduction" class="nav-link active">Introduction</a>
+            <a href="#installation" class="nav-link">Installation</a>
+            <a href="#quick-start" class="nav-link">Quick Start</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Core Concepts</div>
+            <a href="#architecture" class="nav-link">Architecture</a>
+            <a href="#rendering" class="nav-link">Rendering Pipeline</a>
+            <a href="#geometry" class="nav-link">Geometry System</a>
+            <a href="#projection" class="nav-link">Projection Math</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Implementation</div>
+            <a href="#rotation" class="nav-link">Rotation Matrices</a>
+            <a href="#zbuffer" class="nav-link">Z-Buffer</a>
+            <a href="#lighting" class="nav-link">Lighting & Shading</a>
+            <a href="#animation" class="nav-link">Animation Loop</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Reference</div>
+            <a href="#configuration" class="nav-link">Configuration</a>
+            <a href="#customization" class="nav-link">Customization</a>
+            <a href="#performance" class="nav-link">Performance</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <a href="#" class="back-link">← Back to Main Site</a>
+
+        <div class="page-header">
+            <h1>Santa Hat Documentation</h1>
+            <p>A complete guide to understanding and customizing the ASCII 3D Santa Hat renderer. Learn the mathematics, implementation details, and how to create your own 3D ASCII art.</p>
+        </div>
+
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>The ASCII Santa Hat renderer is a terminal-based 3D graphics engine that demonstrates fundamental computer graphics concepts using nothing but text characters. Built on the same principles as the famous donut.c, this project extends those ideas to create a more complex, multi-part 3D model.</p>
+
+            <div class="info-box">
+                <div class="info-box-title">💡 What You'll Learn</div>
+                <p>This documentation covers 3D rotation matrices, perspective projection, depth buffering, parametric surface generation, and ASCII-based rendering techniques.</p>
+            </div>
+
+            <h3>Key Features</h3>
+            <ul>
+                <li>Three distinct parametric surfaces (cone, torus, sphere)</li>
+                <li>Real-time 3D rotation on two axes</li>
+                <li>Perspective projection using 1/z depth</li>
+                <li>Z-buffer for proper depth occlusion</li>
+                <li>Dot product-based lighting and shading</li>
+                <li>ANSI color terminal support</li>
+                <li>Scrolling text billboard overlay</li>
+            </ul>
+        </section>
+
+        <section id="installation">
+            <h2>Installation</h2>
+            
+            <h3>Requirements</h3>
+            <ul>
+                <li>Python 3.6 or higher</li>
+                <li>Terminal with ANSI color support</li>
+                <li>No external dependencies required</li>
+            </ul>
+
+            <h3>Setup</h3>
+            <div class="code-block" data-lang="bash">
+<code># Clone the repository
+git clone https://github.com/yourusername/ascii-santa-hat.git
+
+# Navigate to directory
+cd ascii-santa-hat
+
+# Run the renderer
+python main.py</code>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">⚠️ Windows Users</div>
+                <p>On Windows, the script automatically enables ANSI color support. For best results, use Windows Terminal or a modern terminal emulator.</p>
+            </div>
+        </section>
+
+        <section id="quick-start">
+            <h2>Quick Start</h2>
+            <p>Getting the Santa Hat spinning on your terminal is as simple as running the main script. The renderer will clear your terminal and begin the animation immediately.</p>
+
+            <div class="code-block" data-lang="python">
+<code>python main.py</code>
+            </div>
+
+            <p>To stop the animation, press <span class="code-inline">Ctrl+C</span>. The cursor will be restored automatically.</p>
+
+            <h3>What You'll See</h3>
+            <div class="ascii-demo">
+<pre>                  @@@@
+                @@@@@@@
+              @@@@@@@@@
+            @@@@@@@@@@@
+          @@@@@@@@@@@@@@@
+        @@@@@@@@@@@@@@@@@@@
+=============================================
+*** MERRY CHRISTMAS *** HO HO HO ***
+=============================================</pre>
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2>Architecture</h2>
+            <p>The renderer follows a classic 3D graphics pipeline adapted for ASCII output. Understanding this flow is essential to customizing or extending the system.</p>
+
+            <h3>Pipeline Overview</h3>
+            <ol>
+                <li><strong>Geometry Generation:</strong> Create 3D points using parametric equations</li>
+                <li><strong>Rotation:</strong> Apply X and Y axis rotation matrices</li>
+                <li><strong>Translation:</strong> Move object in front of camera (z += 6.0)</li>
+                <li><strong>Projection:</strong> Convert 3D coordinates to 2D screen space</li>
+                <li><strong>Z-Buffer Test:</strong> Compare depth values to determine visibility</li>
+                <li><strong>Lighting:</strong> Calculate luminance using dot product</li>
+                <li><strong>ASCII Mapping:</strong> Select character based on brightness</li>
+                <li><strong>Output:</strong> Print frame to terminal</li>
+            </ol>
+
+            <div class="info-box">
+                <div class="info-box-title">🎯 Core Principle</div>
+                <p>Every pixel is rendered independently. The z-buffer ensures that closer points always overwrite farther ones, creating proper 3D occlusion without complex sorting algorithms.</p>
+            </div>
+        </section>
+
+        <section id="rendering">
+            <h2>Rendering Pipeline</h2>
+            <p>The rendering pipeline is executed for every point on the surface of our 3D model. Let's break down each stage in detail.</p>
+
+            <h3>Stage 1: Point Generation</h3>
+            <p>Each surface is parameterized using two variables (typically t and θ) that sweep across the surface:</p>
+
+            <div class="code-block" data-lang="python">
+<code># Hat body example
+for t_step in range(0, 100, 2):
+    t = t_step / 100.0
+    rad = 1.8 * (1 - t)
+    spine_y = -1.5 + 3.5 * t - 1.0 * (t**3)
+    spine_x = 1.8 * (t**2)
+    
+    for theta_step in range(0, 628, 8):
+        theta = theta_step / 100.0
+        x = spine_x + rad * math.cos(theta)
+        y = spine_y
+        z = rad * math.sin(theta)</code>
+            </div>
+
+            <h3>Stage 2: Transformation</h3>
+            <p>The <span class="code-inline">plot_pixel</span> function handles all transformation, projection, and rendering logic:</p>
+
+            <div class="code-block" data-lang="python">
+<code>def plot_pixel(x, y, z, color, luminance_val):
+    # Rotate around X-axis
+    y2 = y * cosA - z * sinA
+    z2 = y * sinA + z * cosA
+    
+    # Rotate around Y-axis
+    x3 = x * cosB - z2 * sinB
+    y3 = y2
+    z3 = x * sinB + z2 * cosB
+    
+    # Move in front of camera
+    z3 += 6.0</code>
+            </div>
+        </section>
+
+        <section id="geometry">
+            <h2>Geometry System</h2>
+            <p>The Santa Hat is composed of three distinct parametric surfaces. Each surface is defined mathematically and sampled at discrete intervals.</p>
+
+            <h3>Hat Body (Curved Cone)</h3>
+            <p>The main body uses a lofted surface technique where a circle of varying radius follows a curved spine:</p>
+
+            <div class="math-formula">
+rad(t) = 1.8 × (1 - t)
+spineₓ(t) = 1.8 × t²
+spineᵧ(t) = -1.5 + 3.5t - t³
+
+x = spineₓ(t) + rad(t)·cos(θ)
+y = spineᵧ(t)
+z = rad(t)·sin(θ)
+
+where t ∈ [0, 1], θ ∈ [0, 2π]
+            </div>
+
+            <p>The radius shrinks linearly from base to tip, while the spine curves to create the characteristic bent Santa hat shape.</p>
+
+            <h3>Rim (Torus)</h3>
+            <p>The fluffy white rim is a standard torus positioned at the base of the hat:</p>
+
+            <div class="math-formula">
+R = 1.7  (major radius)
+r = 0.4  (minor radius)
+
+x = (R + r·cos(φ))·cos(θ)
+y = -1.5 + r·sin(φ)
+z = (R + r·cos(φ))·sin(θ)
+
+where θ, φ ∈ [0, 2π]
+            </div>
+
+            <h3>Pom-Pom (Sphere)</h3>
+            <p>The pom-pom at the tip is a sphere using latitude-longitude parameterization:</p>
+
+            <div class="math-formula">
+Tip position: (1.8, 1.0, 0)
+Radius: 0.45
+
+x = tipₓ + r·cos(lat)·cos(lon)
+y = tipᵧ + r·sin(lat) - 0.1
+z = r·cos(lat)·sin(lon)
+
+where lat ∈ [-π/2, π/2], lon ∈ [0, 2π]
+            </div>
+        </section>
+
+        <section id="projection">
+            <h2>Projection Math</h2>
+            <p>The renderer uses perspective projection to create depth. This is the same technique used in the classic donut.c demo.</p>
+
+            <h3>The 1/z Trick</h3>
+            <p>After rotation, each point has coordinates (x₃, y₃, z₃) in camera space. We compute:</p>
+
+            <div class="math-formula">
+ooz = 1 / z₃
+            </div>
+
+            <p>This "one over z" value serves two purposes:</p>
+            <ol>
+                <li><strong>Projection:</strong> Larger 1/z values mean closer points</li>
+                <li><strong>Depth comparison:</strong> Used directly in the z-buffer</li>
+            </ol>
+
+            <h3>Screen Coordinates</h3>
+            <div class="math-formula">
+xₛcᵣₑₑₙ = WIDTH/2 + Sₓ × (ooz × x₃)
+yₛcᵣₑₑₙ = HEIGHT/2 + 2 - Sᵧ × (ooz × y₃)
+
+where:
+  Sₓ = 55  (horizontal scale)
+  Sᵧ = 30  (vertical scale)
+  +2 = vertical offset to prevent clipping
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">📐 Why This Works</div>
+                <p>This projection mimics how our eyes work: distant objects appear smaller. The multiplication by ooz makes farther points (larger z₃, smaller ooz) compress toward the center.</p>
+            </div>
+        </section>
+
+        <section id="rotation">
+            <h2>Rotation Matrices</h2>
+            <p>The renderer applies two successive rotations to achieve 3D spinning. These are standard 3D rotation matrices from linear algebra.</p>
+
+            <h3>X-Axis Rotation (Tilt)</h3>
+            <p>Controlled by angle A, this rotates points in the YZ plane:</p>
+
+            <div class="math-formula">
+y₂ = y·cos(A) - z·sin(A)
+z₂ = y·sin(A) + z·cos(A)
+x remains unchanged
+            </div>
+
+            <h3>Y-Axis Rotation (Spin)</h3>
+            <p>Controlled by angle B, this rotates points in the XZ plane:</p>
+
+            <div class="math-formula">
+x₃ = x·cos(B) - z₂·sin(B)
+z₃ = x·sin(B) + z₂·cos(B)
+y₃ = y₂ (unchanged)
+            </div>
+
+            <h3>Animation</h3>
+            <p>The spinning effect is achieved by incrementing B each frame:</p>
+
+            <div class="code-block" data-lang="python">
+<code>B += 0.15  # Radians per frame
+time.sleep(0.03)  # ~33 fps</code>
+            </div>
+
+            <table class="param-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Value</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>A</td>
+                        <td>0.5</td>
+                        <td>Fixed tilt angle (radians)</td>
+                    </tr>
+                    <tr>
+                        <td>B</td>
+                        <td>0 → ∞</td>
+                        <td>Continuously increasing spin angle</td>
+                    </tr>
+                    <tr>
+                        <td>ΔB</td>
+                        <td>0.15</td>
+                        <td>Rotation speed per frame</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="zbuffer">
+            <h2>Z-Buffer</h2>
+            <p>The z-buffer is a critical component that enables proper depth occlusion without sorting geometry.</p>
+
+            <h3>How It Works</h3>
+            <p>For each pixel position on the screen, we store the depth (ooz) of the closest point rendered so far:</p>
+
+            <div class="code-block" data-lang="python">
+<code>zbuffer = [0] * (WIDTH * HEIGHT)
+output = [" "] * (WIDTH * HEIGHT)
+
+# For each point:
+idx = xp + yp * WIDTH
+if ooz > zbuffer[idx]:
+    zbuffer[idx] = ooz
+    output[idx] = color + char + RESET</code>
+            </div>
+
+            <h3>Why 1/z?</h3>
+            <p>Using the inverse depth (ooz = 1/z) has a clever property:</p>
+            <ul>
+                <li>Larger ooz = smaller z = closer to camera</li>
+                <li>Simple comparison: <span class="code-inline">if ooz > zbuffer[idx]</span></li>
+                <li>No need to invert z back for comparison</li>
+            </ul>
+
+            <div class="info-box">
+                <div class="info-box-title">🎯 Key Insight</div>
+                <p>The z-buffer test happens after projection. This means we never need to sort our geometry or worry about draw order—the z-buffer handles everything automatically.</p>
+            </div>
+        </section>
+
+        <section id="lighting">
+            <h2>Lighting & Shading</h2>
+            <p>The renderer uses a simple but effective diffuse lighting model based on the dot product of surface normals with a light direction vector.</p>
+
+            <h3>Normal Calculation</h3>
+            <p>For each surface, we approximate the normal vector. For the hat body:</p>
+
+            <div class="code-block" data-lang="python">
+<code>nx = math.cos(theta)
+ny = 0.5
+nz = math.sin(theta)
+
+# Light direction: (0.5, 0.5, -0.5)
+L = nx * 0.5 + ny * 0.5 - nz * 0.5</code>
+            </div>
+
+            <h3>ASCII Character Mapping</h3>
+            <p>The luminance value determines which ASCII character to use:</p>
+
+            <div class="code-block" data-lang="python">
+<code>chars = ".,-~:;=!*#$@"
+
+lum_idx = int(L * 8)
+lum_idx = max(0, min(len(chars)-1, lum_idx))
+char = chars[lum_idx]</code>
+            </div>
+
+            <table class="param-table">
+                <thead>
+                    <tr>
+                        <th>Luminance</th>
+                        <th>Character</th>
+                        <th>Visual Density</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0.0 - 0.1</td>
+                        <td>.</td>
+                        <td>Very dim</td>
+                    </tr>
+                    <tr>
+                        <td>0.1 - 0.3</td>
+                        <td>,-~</td>
+                        <td>Dim</td>
+                    </tr>
+                    <tr>
+                        <td>0.3 - 0.6</td>
+                        <td>:;=</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>0.6 - 0.9</td>
+                        <td>!*#</td>
+                        <td>Bright</td>
+                    </tr>
+                    <tr>
+                        <td>0.9 - 1.0</td>
+                        <td>$@</td>
+                        <td>Very bright</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="animation">
+            <h2>Animation Loop</h2>
+            <p>The main render loop handles frame generation, terminal control, and timing.</p>
+
+            <h3>Frame Structure</h3>
+            <h3>Frame Structure</h3>
+            <div class="code-block" data-lang="python">
+<code>while True:
+    # 1. Reset buffers
+    zbuffer = [0] * (WIDTH * HEIGHT)
+    output = [" "] * (WIDTH * HEIGHT)
+    
+    # 2. Compute trig values once per frame
+    sinA, cosA = math.sin(A), math.cos(A)
+    sinB, cosB = math.sin(B), math.cos(B)
+    
+    # 3. Render all geometry
+    render_hat_body()
+    render_rim()
+    render_pompom()
+    
+    # 4. Overlay billboard text
+    render_billboard()
+    
+    # 5. Print to terminal
+    sys.stdout.write("\x1b[H")  # Move cursor to top-left
+    sys.stdout.write("".join(output))
+    sys.stdout.flush()
+    
+    # 6. Update animation state
+    B += 0.15
+    text_offset += 1
+    time.sleep(0.03)  # ~33 fps</code>
+            </div>
+
+            <h3>Terminal Control Sequences</h3>
+            <table class="param-table">
+                <thead>
+                    <tr>
+                        <th>Sequence</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>\x1b[H</td>
+                        <td>Move cursor to home position (0,0)</td>
+                    </tr>
+                    <tr>
+                        <td>\x1b[?25l</td>
+                        <td>Hide cursor</td>
+                    </tr>
+                    <tr>
+                        <td>\x1b[?25h</td>
+                        <td>Show cursor (on exit)</td>
+                    </tr>
+                    <tr>
+                        <td>\x1b[31m</td>
+                        <td>Red text color</td>
+                    </tr>
+                    <tr>
+                        <td>\x1b[0m</td>
+                        <td>Reset all formatting</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <div class="info-box-title">⚡ Performance Tip</div>
+                <p>Computing sin and cos values once per frame (rather than per-pixel) significantly improves performance. With thousands of pixels, this optimization is crucial for maintaining smooth framerates.</p>
+            </div>
+        </section>
+
+        <section id="configuration">
+            <h2>Configuration</h2>
+            <p>The renderer can be customized by modifying constants at the top of the file.</p>
+
+            <h3>Display Settings</h3>
+            <table class="param-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>WIDTH</td>
+                        <td>80</td>
+                        <td>Terminal width in characters</td>
+                    </tr>
+                    <tr>
+                        <td>HEIGHT</td>
+                        <td>30</td>
+                        <td>Terminal height in characters</td>
+                    </tr>
+                    <tr>
+                        <td>Scale X</td>
+                        <td>55</td>
+                        <td>Horizontal projection scale</td>
+                    </tr>
+                    <tr>
+                        <td>Scale Y</td>
+                        <td>30</td>
+                        <td>Vertical projection scale</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Animation Settings</h3>
+            <table class="param-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>A (tilt)</td>
+                        <td>0.5</td>
+                        <td>Fixed X-axis rotation angle</td>
+                    </tr>
+                    <tr>
+                        <td>B increment</td>
+                        <td>0.15</td>
+                        <td>Spin speed (radians/frame)</td>
+                    </tr>
+                    <tr>
+                        <td>Frame delay</td>
+                        <td>0.03</td>
+                        <td>Seconds between frames (~33 fps)</td>
+                    </tr>
+                    <tr>
+                        <td>Text scroll</td>
+                        <td>1</td>
+                        <td>Characters to scroll per frame</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Geometry Parameters</h3>
+            <div class="code-block" data-lang="python">
+<code># Hat body sampling
+t_step_size = 2      # Vertical resolution
+theta_step_size = 8  # Horizontal resolution
+
+# Rim sampling
+rim_theta_step = 12
+rim_phi_step = 15
+
+# Pom-pom sampling
+lat_step = 30
+lon_step = 30</code>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">⚠️ Performance Trade-offs</div>
+                <p>Smaller step sizes produce smoother surfaces but require more computation. Increase step sizes if you experience lag on slower systems.</p>
+            </div>
+        </section>
+
+        <section id="customization">
+            <h2>Customization</h2>
+            <p>Learn how to modify the renderer to create your own 3D ASCII art or adjust the Santa Hat's appearance.</p>
+
+            <h3>Changing Colors</h3>
+            <div class="code-block" data-lang="python">
+<code># ANSI color codes
+RED_TXT = "\x1b[31m"
+GREEN_TXT = "\x1b[32m"
+YELLOW_TXT = "\x1b[33m"
+BLUE_TXT = "\x1b[34m"
+MAGENTA_TXT = "\x1b[35m"
+CYAN_TXT = "\x1b[36m"
+WHITE_TXT = "\x1b[37m"
+
+# Use in plot_pixel calls
+plot_pixel(x, y, z, BLUE_TXT, L)</code>
+            </div>
+
+            <h3>Creating New Shapes</h3>
+            <p>To add a new parametric surface, follow this pattern:</p>
+
+            <div class="code-block" data-lang="python">
+<code># Example: Cylinder
+def render_cylinder():
+    radius = 1.0
+    height = 3.0
+    
+    for h_step in range(0, 100, 5):
+        h = (h_step / 100.0) * height - height/2
+        
+        for theta_step in range(0, 628, 10):
+            theta = theta_step / 100.0
+            
+            x = radius * math.cos(theta)
+            y = h
+            z = radius * math.sin(theta)
+            
+            # Normal points outward from cylinder axis
+            nx = math.cos(theta)
+            ny = 0
+            nz = math.sin(theta)
+            
+            L = nx * 0.5 + ny * 0.5 - nz * 0.5
+            if L > 0:
+                plot_pixel(x, y, z, GREEN_TXT, L)</code>
+            </div>
+
+            <h3>Adjusting the Hat Shape</h3>
+            <p>Modify the spine curves to change the hat's profile:</p>
+
+            <div class="code-block" data-lang="python">
+<code># Original curved hat
+spine_y = -1.5 + 3.5 * t - 1.0 * (t**3)
+spine_x = 1.8 * (t**2)
+
+# Straight cone
+spine_y = -1.5 + 4.0 * t
+spine_x = 0
+
+# Exaggerated curve
+spine_y = -1.5 + 3.5 * t - 2.0 * (t**3)
+spine_x = 2.5 * (t**2)</code>
+            </div>
+
+            <h3>Custom ASCII Character Sets</h3>
+            <div class="code-block" data-lang="python">
+<code># Default
+chars = ".,-~:;=!*#$@"
+
+# High contrast
+chars = " .:-=+*#%@"
+
+# Block style
+chars = " ░▒▓█"
+
+# Dots only
+chars = ".·∙•●"</code>
+            </div>
+        </section>
+
+        <section id="performance">
+            <h2>Performance</h2>
+            <p>Understanding performance characteristics helps you optimize the renderer for your system.</p>
+
+            <h3>Complexity Analysis</h3>
+            <p>The rendering complexity is O(n) where n is the total number of points sampled:</p>
+
+            <div class="math-formula">
+Total points = (hat_points) + (rim_points) + (pompom_points)
+
+Hat: (100/2) × (628/8) ≈ 3,925 points
+Rim: (628/12) × (628/15) ≈ 2,190 points
+Pom: (300/30) × (628/30) ≈ 210 points
+
+Total ≈ 6,325 points per frame
+            </div>
+
+            <h3>Optimization Techniques</h3>
+
+            <h4>1. Reduce Sampling Resolution</h4>
+            <div class="code-block" data-lang="python">
+<code># Lower resolution (faster)
+for t_step in range(0, 100, 4):  # Was 2
+    for theta_step in range(0, 628, 16):  # Was 8</code>
+            </div>
+
+            <h4>2. Precompute Constants</h4>
+            <div class="code-block" data-lang="python">
+<code># Compute once per frame, not per pixel
+sinA, cosA = math.sin(A), math.cos(A)
+sinB, cosB = math.sin(B), math.cos(B)
+
+# Precompute projection constants
+half_width = WIDTH / 2
+half_height = HEIGHT / 2</code>
+            </div>
+
+            <h4>3. Skip Invisible Faces</h4>
+            <div class="code-block" data-lang="python">
+<code># Only render if facing camera
+L = nx * 0.5 + ny * 0.5 - nz * 0.5
+if L > 0:  # Backface culling
+    plot_pixel(x, y, z, color, L)</code>
+            </div>
+
+            <h3>Typical Performance</h3>
+            <table class="param-table">
+                <thead>
+                    <tr>
+                        <th>System</th>
+                        <th>FPS</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Modern Desktop</td>
+                        <td>30-60</td>
+                        <td>Smooth animation</td>
+                    </tr>
+                    <tr>
+                        <td>Laptop</td>
+                        <td>20-30</td>
+                        <td>Good performance</td>
+                    </tr>
+                    <tr>
+                        <td>Raspberry Pi</td>
+                        <td>10-20</td>
+                        <td>Playable, reduce resolution if needed</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <div class="info-box-title">💡 Terminal Performance</div>
+                <p>Terminal emulator choice significantly affects performance. Modern GPU-accelerated terminals (Alacritty, Kitty, Windows Terminal) perform much better than legacy terminals.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Mathematical Foundations</h2>
+            <p>A deeper dive into the mathematics that make this renderer work.</p>
+
+            <h3>Coordinate Systems</h3>
+            <p>The renderer uses three coordinate systems:</p>
+
+            <ol>
+                <li><strong>Model Space:</strong> Original geometry coordinates</li>
+                <li><strong>World/Camera Space:</strong> After rotation (x₃, y₃, z₃)</li>
+                <li><strong>Screen Space:</strong> 2D terminal coordinates (xₚ, yₚ)</li>
+            </ol>
+
+            <h3>Perspective Projection Derivation</h3>
+            <p>Consider a point P at (x, y, z) viewed from the origin. The camera has a projection plane at distance K₂ from the viewer:</p>
+
+            <div class="math-formula">
+Similar triangles give us:
+x' / K₁ = x / (K₂ + z)
+
+Therefore:
+x' = (K₁ × x) / (K₂ + z)
+y' = (K₁ × y) / (K₂ + z)
+
+Rewrite as:
+x' = K₁ × x × (1 / (K₂ + z))
+y' = K₁ × y × (1 / (K₂ + z))
+
+In our implementation:
+ooz = 1 / z₃  (we already moved object by K₂=6.0)
+xₚ = center_x + K₁ × x₃ × ooz
+yₚ = center_y - K₁ × y₃ × ooz
+            </div>
+
+            <h3>Why Two Rotations?</h3>
+            <p>A single rotation around one axis only allows 1 degree of freedom. By combining X and Y rotations, we achieve full 3D orientation control. This is the basis of Euler angles.</p>
+
+            <div class="info-box">
+                <div class="info-box-title">📚 Further Reading</div>
+                <p>For a deeper understanding of 3D graphics mathematics, see <em>Fundamentals of Computer Graphics</em> by Shirley & Marschner, or explore the original <a href="https://www.a1k0n.net/2011/07/20/donut-math.html" style="color: var(--accent-red);">donut.c explanation</a> by Andy Sloane.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Troubleshooting</h2>
+            
+            <h3>Common Issues</h3>
+
+            <h4>Colors Not Showing</h4>
+            <p><strong>Symptom:</strong> ASCII characters render but no colors appear.</p>
+            <p><strong>Solution:</strong> Ensure your terminal supports ANSI colors. On Windows, use Windows Terminal or enable ANSI support with <span class="code-inline">os.system('color')</span>.</p>
+
+            <h4>Hat Appears Clipped</h4>
+            <p><strong>Symptom:</strong> Bottom of hat is cut off.</p>
+            <p><strong>Solution:</strong> Adjust the vertical offset in projection:</p>
+            <div class="code-block" data-lang="python">
+<code>yp = int((HEIGHT / 2 + 2) - 30 * ooz * y3)
+#                     ↑ Increase this value</code>
+            </div>
+
+            <h4>Slow Performance</h4>
+            <p><strong>Symptom:</strong> Animation is choppy or laggy.</p>
+            <p><strong>Solutions:</strong></p>
+            <ul>
+                <li>Increase sampling step sizes (reduce point count)</li>
+                <li>Reduce WIDTH and HEIGHT</li>
+                <li>Use a GPU-accelerated terminal emulator</li>
+                <li>Increase frame delay: <span class="code-inline">time.sleep(0.05)</span></li>
+            </ul>
+
+            <h4>Division by Zero Error</h4>
+            <p><strong>Symptom:</strong> Crash with ZeroDivisionError.</p>
+            <p><strong>Solution:</strong> Add protection in plot_pixel:</p>
+            <div class="code-block" data-lang="python">
+<code>if z3 == 0:
+    z3 = 0.001
+ooz = 1 / z3</code>
+            </div>
+        </section>
+
+        <section>
+            <h2>Examples & Extensions</h2>
+            
+            <h3>Example 1: Adding a Star</h3>
+            <div class="code-block" data-lang="python">
+<code>def render_star():
+    # Five-pointed star at top of hat
+    star_x, star_y = 1.8, 1.5
+    
+    for i in range(5):
+        angle = (i * 2 * math.pi / 5) - math.pi / 2
+        for r_step in range(0, 30, 5):
+            r = r_step / 100.0
+            
+            x = star_x + r * math.cos(angle)
+            y = star_y
+            z = r * math.sin(angle)
+            
+            plot_pixel(x, y, z, YELLOW_TXT, 1.0)</code>
+            </div>
+
+            <h3>Example 2: Multiple Hats</h3>
+            <div class="code-block" data-lang="python">
+<code>def render_hat_at_position(offset_x, offset_z):
+    for t_step in range(0, 100, 2):
+        # ... hat geometry code ...
+        x = spine_x + rad * math.cos(theta) + offset_x
+        z = rad * math.sin(theta) + offset_z
+        plot_pixel(x, y, z, RED_TXT, L)
+
+# Render three hats
+render_hat_at_position(-3, 0)
+render_hat_at_position(0, 0)
+render_hat_at_position(3, 0)</code>
+            </div>
+
+            <h3>Example 3: Interactive Controls</h3>
+            <div class="code-block" data-lang="python">
+<code>import sys, tty, termios, select
+
+def get_key():
+    if select.select([sys.stdin], [], [], 0)[0]:
+        return sys.stdin.read(1)
+    return None
+
+# In render loop:
+key = get_key()
+if key == 'w': A += 0.1
+if key == 's': A -= 0.1
+if key == 'a': B -= 0.2
+if key == 'd': B += 0.2
+if key == 'q': break</code>
+            </div>
+        </section>
+
+        <section>
+            <h2>Credits & License</h2>
+            
+            <h3>Inspiration</h3>
+            <p>This project is heavily inspired by Andy Sloane's (a1k0n) legendary <a href="https://www.a1k0n.net/2011/07/20/donut-math.html" style="color: var(--accent-red);">donut.c</a>. The mathematical techniques and rendering approach are directly adapted from that work.</p>
+
+            <h3>Author</h3>
+            <p>Created with ❤️ for the holiday season and the joy of understanding computer graphics from first principles.</p>
+
+            <h3>License</h3>
+            <div class="code-block" data-lang="text">
+<code>MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</code>
+            </div>
+
+            <h3>Contributing</h3>
+            <p>Contributions are welcome! Feel free to:</p>
+            <ul>
+                <li>Add new shapes and models</li>
+                <li>Improve performance</li>
+                <li>Create new lighting models</li>
+                <li>Enhance the documentation</li>
+                <li>Report bugs and suggest features</li>
+            </ul>
+
+            <div class="info-box">
+                <div class="info-box-title">🎄 Share Your Creations</div>
+                <p>If you create something cool with this renderer, we'd love to see it! Tag your terminal recordings with #ASCIISantaHat</p>
+            </div>
+        </section>
+
+        <section style="text-align: center; padding: 4rem 0; border-top: 1px solid var(--border-color); margin-top: 4rem;">
+            <h2 style="margin-bottom: 1rem;">Happy Holidays! 🎅</h2>
+            <p style="color: var(--text-secondary); font-size: 1.1rem;">May your terminals be merry and your renders be smooth.</p>
+            <div style="margin-top: 2rem;">
+                <a href="#introduction" style="color: var(--accent-red); text-decoration: none; padding: 0.75rem 2rem; border: 1px solid var(--border-color); border-radius: 30px; display: inline-block; transition: all 0.3s ease;">Back to Top ↑</a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Sidebar toggle for mobile
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        // Active link highlighting
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+
+        function highlightNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', highlightNav);
+        highlightNav();
+
+        // Smooth scrolling
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').slice(1);
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    
+                    // Close sidebar on mobile
+                    if (window.innerWidth <= 968) {
+                        document.getElementById('sidebar').classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.menu-toggle');
+            
+            if (window.innerWidth <= 968 && 
+                sidebar.classList.contains('active') &&
+                !sidebar.contains(e.target) &&
+                !toggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
